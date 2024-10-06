@@ -1,15 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App.jsx";
 import ProvideAuth from "./useAuth";
 
-import App from "./App";
-
-ReactDOM.render(
+createRoot(document.getElementById("root")).render(
   <ProvideAuth>
     <Router>
       <App />
     </Router>
-  </ProvideAuth>,
-  document.getElementById("root")
+  </ProvideAuth>
 );

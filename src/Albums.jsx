@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./useAuth";
 
 export default function Albums() {
   const [albums, setAlbums] = useState([]);
   const {
-    user: { id }
+    user: { id },
   } = useAuth();
   const uri = `https://jsonplaceholder.typicode.com/albums?userId=${id}`;
 
@@ -14,7 +14,9 @@ export default function Albums() {
       try {
         const resp = await fetch(uri);
         setAlbums(await resp.json());
-      } catch(e) { alert(e); }
+      } catch (e) {
+        alert(e);
+      }
     })();
   }, [uri]);
 

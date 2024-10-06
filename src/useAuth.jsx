@@ -1,4 +1,5 @@
-import React, { useContext, createContext, useState } from "react";
+import PropTypes from "prop-types";
+import { createContext, useContext, useState } from "react";
 
 const authContext = createContext();
 
@@ -13,7 +14,7 @@ export default function ProvideAuth({ children }) {
         `https://jsonplaceholder.typicode.com/users?username=${username}`
       );
       user = (await resp.json())[0];
-    } catch(e) {
+    } catch (e) {
       alert(e);
       failureCb();
     }
@@ -32,6 +33,10 @@ export default function ProvideAuth({ children }) {
     </authContext.Provider>
   );
 }
+
+ProvideAuth.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export function useAuth() {
   return useContext(authContext);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PhotoTitle from "./PhotoTitle";
 
@@ -28,11 +28,13 @@ export default function Photos() {
     setFoundWords(extractWords(photos, searchStr));
   }, [searchStr, photos]);
 
-  // TODO useMemo
-  const filteredPhotos =
-    searchStr === ""
-      ? photos
-      : photos.filter(({ title }) => title.indexOf(searchStr) >= 0);
+  const filteredPhotos = useMemo(
+    () =>
+      searchStr === ""
+        ? photos
+        : photos.filter(({ title }) => title.indexOf(searchStr) >= 0),
+    [photos, searchStr]
+  );
 
   return (
     <div className="row">
@@ -54,22 +56,22 @@ export default function Photos() {
             className="form-control"
           />
         </div>
-        {filteredPhotos.map((photo) => (
-          <div className="card mb-3 bg-light" key={photo.id}>
+        {filteredPhotos.map(({ id, url, thumbnailUrl, title }) => (
+          <div className="card mb-3 bg-light" key={id}>
             <div className="row no-gutters align-items-center">
               <div className="col-sm-3">
-                <a href={photo.url} target="_blank" rel="noreferrer">
+                <a href={url} target="_blank" rel="noreferrer">
                   <img
-                    src={photo.thumbnailUrl}
+                    src={thumbnailUrl}
                     className="w-auto rounded-left"
-                    alt={`thumbnail for ${photo.title}`}
+                    alt={`thumbnail for ${title}`}
                   />
                 </a>
               </div>
               <div className="col-sm-9">
                 <div className="card-body">
                   <p className="card-text">
-                    <PhotoTitle title={photo.title} highlighted={foundWords} />
+                    <PhotoTitle title={title} highlighted={foundWords} />
                   </p>
                 </div>
               </div>
